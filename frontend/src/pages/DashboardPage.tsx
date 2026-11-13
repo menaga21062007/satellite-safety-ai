@@ -37,7 +37,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   selectedDebris,
   onSelectDebris,
   onNavigateToDebris,
-  onNavigateToManeuver
+  onNavigateToManeuver,
+  maneuverResult
 }) => {
   const topThreat = selectedDebris || riskAnalysis?.highest_threat || debrisList[0] || null;
   const isCritical = riskAnalysis?.overall_risk_level === 'Critical';
@@ -45,6 +46,28 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
   return (
     <div className="space-y-4 font-sans max-w-7xl mx-auto pb-6">
+      {/* Moved Safely Banner when Avoidance Maneuver has been executed */}
+      {maneuverResult && (
+        <div className="p-3.5 rounded-2xl bg-[#eef5eb] border-2 border-[#597445] text-[#1e2418] text-xs flex items-center justify-between shadow-sm animate-in fade-in duration-300">
+          <div className="flex items-center space-x-2.5">
+            <div className="w-6 h-6 rounded-lg bg-[#597445] text-white flex items-center justify-center">
+              <CheckCircle2 className="w-4 h-4 text-white" />
+            </div>
+            <div>
+              <span className="font-heading font-black text-[#597445] text-xs tracking-wider uppercase mr-1.5">
+                MOVED SAFELY:
+              </span>
+              <span className="text-[#3b4731]">
+                Spacecraft elevated to safe orbit altitude (<span className="font-bold text-[#1e2418] font-mono">{satellite?.altitude} km</span>). Conjunction threat cleared!
+              </span>
+            </div>
+          </div>
+          <span className="hidden sm:inline-block px-2.5 py-0.5 rounded-full bg-[#597445] text-white text-[9px] font-bold uppercase tracking-wider">
+            Safe Orbit Nominal
+          </span>
+        </div>
+      )}
+
       {/* 4 Compact Telemetry Cards (With Defined Crisp Borders) */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
         {/* Card 1: Altitude & Flight Vector */}

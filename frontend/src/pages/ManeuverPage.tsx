@@ -7,7 +7,8 @@ import {
   Clock, 
   Fuel, 
   ArrowRight,
-  Sparkles
+  Sparkles,
+  CheckCircle2
 } from 'lucide-react';
 
 interface ManeuverPageProps {
@@ -61,18 +62,24 @@ export const ManeuverPage: React.FC<ManeuverPageProps> = ({
             </div>
 
             {maneuverResult && (
-              <div className="p-3 rounded-xl bg-[#f4f7f2] border-2 border-[#597445]/40 text-[#2b3323] text-xs flex items-center justify-between shadow-sm animate-in fade-in slide-in-from-top-2 duration-300 mb-3.5">
-                <div className="flex items-center space-x-2.5">
-                  <span className="w-2 h-2 rounded-full bg-[#597445] animate-ping" />
+              <div className="p-4 rounded-2xl bg-[#eef5eb] border-2 border-[#597445] text-[#1e2418] text-xs flex items-center justify-between shadow-md animate-in fade-in slide-in-from-top-2 duration-300 mb-4">
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 rounded-xl bg-[#597445] text-white flex items-center justify-center shadow-sm shrink-0">
+                    <CheckCircle2 className="w-5 h-5 text-white" />
+                  </div>
                   <div>
-                    <span className="font-bold text-[#1e2418]">
-                      Burn Executed Successfully:
-                    </span>
-                    <span className="text-[#48533c] ml-1">
-                      Boosted to <span className="text-[#1e2418] font-mono font-bold">{maneuverResult.new_altitude} km</span> (+{maneuverResult.altitude_change} km). Hazard cleared!
-                    </span>
+                    <div className="font-heading font-black text-sm text-[#597445] tracking-wide flex items-center space-x-1.5">
+                      <span>MOVED SAFELY</span>
+                      <span className="w-2 h-2 rounded-full bg-[#597445] animate-ping" />
+                    </div>
+                    <div className="text-[11px] text-[#3b4731] mt-0.5">
+                      Satellite moved safely to orbit altitude <span className="text-[#1e2418] font-mono font-bold">{maneuverResult.new_altitude} km</span> (+{maneuverResult.altitude_change} km boost). All conjunction hazards cleared!
+                    </div>
                   </div>
                 </div>
+                <span className="hidden sm:inline-block px-3 py-1 rounded-full bg-[#597445] text-white text-[10px] font-bold uppercase tracking-wider shadow-sm">
+                  SAFE ORBIT ACTIVE
+                </span>
               </div>
             )}
 
@@ -149,15 +156,22 @@ export const ManeuverPage: React.FC<ManeuverPageProps> = ({
           {/* Move to Safe Orbit Action Button (Moss Green Pill Button) */}
           {recommendation && (
             <div className="mt-5 pt-3.5 border-t border-[#cfc4b2]">
-              <button
-                onClick={onExecuteManeuver}
-                disabled={isExecutingManeuver}
-                className="w-full btn-moss py-3 px-6 text-xs font-bold tracking-wider shadow-md active:scale-98 disabled:opacity-50 disabled:cursor-not-allowed uppercase flex items-center justify-center space-x-2 transition-all"
-              >
-                <Rocket className={`w-4 h-4 text-white ${isExecutingManeuver ? 'animate-bounce' : ''}`} />
-                <span>{isExecutingManeuver ? 'EXECUTING THRUSTER BURN (PLEASE WAIT)...' : 'MOVE TO SAFE ORBIT (EXECUTE NOW)'}</span>
-                <ArrowRight className="w-3.5 h-3.5 ml-0.5 text-white" />
-              </button>
+              {maneuverResult ? (
+                <div className="w-full py-3.5 px-6 rounded-2xl bg-[#597445] text-white font-heading font-black text-xs tracking-wider uppercase flex items-center justify-center space-x-2 shadow-md">
+                  <CheckCircle2 className="w-4 h-4 text-white" />
+                  <span>MOVED SAFELY • SATELLITE IN SAFE ORBIT</span>
+                </div>
+              ) : (
+                <button
+                  onClick={onExecuteManeuver}
+                  disabled={isExecutingManeuver}
+                  className="w-full btn-moss py-3 px-6 text-xs font-bold tracking-wider shadow-md active:scale-98 disabled:opacity-50 disabled:cursor-not-allowed uppercase flex items-center justify-center space-x-2 transition-all"
+                >
+                  <Rocket className={`w-4 h-4 text-white ${isExecutingManeuver ? 'animate-bounce' : ''}`} />
+                  <span>{isExecutingManeuver ? 'EXECUTING THRUSTER BURN (PLEASE WAIT)...' : 'MOVE TO SAFE ORBIT (EXECUTE NOW)'}</span>
+                  <ArrowRight className="w-3.5 h-3.5 ml-0.5 text-white" />
+                </button>
+              )}
             </div>
           )}
         </div>
