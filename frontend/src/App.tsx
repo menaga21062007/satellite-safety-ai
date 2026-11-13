@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { api } from './api';
-import { Satellite, DebrisObject, Alert, RiskAnalysisResponse } from './types';
+import { Satellite, DebrisObject, Alert, RiskAnalysisResponse, ManeuverRecommendation } from './types';
 import { Navbar } from './components/Navbar';
 import { Sidebar, PageId } from './components/Sidebar';
 import { DashboardPage } from './pages/DashboardPage';
@@ -18,7 +18,11 @@ const DEFAULT_SATELLITE: Satellite = {
   battery_percent: 98.2,
   status: 'Operational',
   current_orbit: 'Sun-Synchronous LEO (550 km)',
-  last_contact: new Date().toISOString()
+  latitude: 28.57,
+  longitude: -80.64,
+  mass_kg: 420.0,
+  last_update: new Date().toISOString(),
+  is_active: 1
 };
 
 const DEFAULT_SATELLITES: Satellite[] = [
@@ -33,7 +37,11 @@ const DEFAULT_SATELLITES: Satellite[] = [
     battery_percent: 95.5,
     status: 'Operational',
     current_orbit: 'Polar LEO (720 km)',
-    last_contact: new Date().toISOString()
+    latitude: -12.45,
+    longitude: 130.84,
+    mass_kg: 580.0,
+    last_update: new Date().toISOString(),
+    is_active: 0
   }
 ];
 
@@ -41,97 +49,146 @@ const DEFAULT_DEBRIS: DebrisObject[] = [
   {
     id: 'deb-cosmos-2251',
     name: 'COSMOS 2251 DEB #33789',
-    altitude: 551.4,
+    type: 'space debris',
+    distance: 1.84,
     velocity: 7.62,
-    miss_distance: 1.84,
+    direction: 'NW',
+    size: 0.14,
+    threat_level: 'critical',
+    risk_level: 'Critical',
     collision_probability: 0.0034,
-    size: '14 cm',
-    threat_level: 'Critical',
-    time_to_closest_approach: '18m 42s',
-    rcs: 0.12,
-    source: 'NORAD SSA Catalog'
+    time_to_impact: 1122,
+    time_to_impact_formatted: '18m 42s',
+    radial_distance: 1.84,
+    bearing_angle: 42,
+    last_seen: new Date().toISOString()
   },
   {
     id: 'deb-fengyun-1c',
     name: 'FENGYUN 1C DEB #29910',
-    altitude: 553.8,
+    type: 'space debris',
+    distance: 4.21,
     velocity: 7.55,
-    miss_distance: 4.21,
+    direction: 'SE',
+    size: 0.08,
+    threat_level: 'risky',
+    risk_level: 'High',
     collision_probability: 0.0008,
-    size: '8 cm',
-    threat_level: 'High',
-    time_to_closest_approach: '44m 10s',
-    rcs: 0.08,
-    source: 'NORAD SSA Catalog'
+    time_to_impact: 2650,
+    time_to_impact_formatted: '44m 10s',
+    radial_distance: 4.21,
+    bearing_angle: 135,
+    last_seen: new Date().toISOString()
   },
   {
     id: 'deb-sl8-rb',
     name: 'SL-8 R/B SPENT STAGE',
-    altitude: 546.2,
+    type: 'rocket body',
+    distance: 9.65,
     velocity: 7.64,
-    miss_distance: 9.65,
+    direction: 'NE',
+    size: 2.4,
+    threat_level: 'watchlist',
+    risk_level: 'Medium',
     collision_probability: 0.0001,
-    size: '2.4 m',
-    threat_level: 'Medium',
-    time_to_closest_approach: '1h 12m',
-    rcs: 1.85,
-    source: 'Space-Track Catalog'
+    time_to_impact: 4320,
+    time_to_impact_formatted: '1h 12m',
+    radial_distance: 9.65,
+    bearing_angle: 210,
+    last_seen: new Date().toISOString()
   },
   {
     id: 'deb-iridium-33',
     name: 'IRIDIUM 33 DEB #34012',
-    altitude: 558.1,
+    type: 'space debris',
+    distance: 14.80,
     velocity: 7.51,
-    miss_distance: 14.80,
+    direction: 'SW',
+    size: 0.22,
+    threat_level: 'safe',
+    risk_level: 'Low',
     collision_probability: 0.00003,
-    size: '22 cm',
-    threat_level: 'Low',
-    time_to_closest_approach: '2h 05m',
-    rcs: 0.25,
-    source: 'NORAD SSA Catalog'
+    time_to_impact: 7500,
+    time_to_impact_formatted: '2h 05m',
+    radial_distance: 14.80,
+    bearing_angle: 285,
+    last_seen: new Date().toISOString()
   },
   {
     id: 'deb-cz4-frag',
     name: 'CZ-4B DEBRIS FRAGMENT',
-    altitude: 541.9,
+    type: 'old satellite fragment',
+    distance: 22.40,
     velocity: 7.68,
-    miss_distance: 22.40,
+    direction: 'E',
+    size: 0.05,
+    threat_level: 'safe',
+    risk_level: 'Low',
     collision_probability: 0.00001,
-    size: '5 cm',
-    threat_level: 'Nominal',
-    time_to_closest_approach: '3h 30m',
-    rcs: 0.04,
-    source: 'Space-Track Catalog'
+    time_to_impact: 12600,
+    time_to_impact_formatted: '3h 30m',
+    radial_distance: 22.40,
+    bearing_angle: 340,
+    last_seen: new Date().toISOString()
   }
 ];
 
+const DEFAULT_MANEUVER: ManeuverRecommendation = {
+  maneuver_id: 'man-1',
+  target_object_id: 'deb-cosmos-2251',
+  target_object_name: 'COSMOS 2251 DEB #33789',
+  direction: 'Prograde',
+  altitude_change: 2.1,
+  new_altitude: 552.1,
+  delta_v: 0.82,
+  burn_duration_seconds: 4.5,
+  burn_duration_formatted: '4.5s',
+  fuel_used_kg: 0.18,
+  fuel_percent_used: 0.5,
+  reason: 'Autonomous evasion burn to clear COSMOS 2251 fragment below safety threshold.',
+  safety_clearance_post_maneuver_km: 8.42,
+  post_maneuver_risk: 'Low'
+};
+
 const DEFAULT_RISK: RiskAnalysisResponse = {
-  overall_risk_level: 'High',
-  max_collision_probability: 0.0034,
-  min_miss_distance: 1.84,
+  satellite_id: 'sat-1',
+  overall_risk_level: 'Critical',
+  monitored_objects_count: 5,
+  counts: {
+    critical: 1,
+    high: 1,
+    medium: 1,
+    low: 2
+  },
   highest_threat: DEFAULT_DEBRIS[0],
-  recommendation: 'Autonomous Prograde Thruster Burn (+0.82 m/s delta-V) at T-12m to expand miss distance to 8.4 km.',
-  conjunction_count: 5
+  ai_recommendation: DEFAULT_MANEUVER,
+  detailed_analysis: DEFAULT_DEBRIS
 };
 
 const DEFAULT_ALERTS: Alert[] = [
   {
     id: 'alt-1',
-    satellite_id: 'sat-1',
-    debris_id: 'deb-cosmos-2251',
+    timestamp: new Date().toISOString(),
+    object_id: 'deb-cosmos-2251',
+    object_name: 'COSMOS 2251 DEB #33789',
     risk_level: 'Critical',
-    message: 'CRITICAL CONJUNCTION: COSMOS 2251 DEB #33789 miss distance 1.84 km below 2.0 km threshold.',
-    status: 'Active',
-    created_at: new Date().toISOString()
+    distance: 1.84,
+    velocity: 7.62,
+    estimated_impact_time: '18m 42s',
+    recommended_action: 'Initiate +0.82 m/s Prograde burn at T-12m.',
+    status: 'Active'
   },
   {
     id: 'alt-2',
-    satellite_id: 'sat-1',
-    debris_id: 'deb-fengyun-1c',
+    timestamp: new Date().toISOString(),
+    object_id: 'deb-fengyun-1c',
+    object_name: 'FENGYUN 1C DEB #29910',
     risk_level: 'High',
-    message: 'High collision risk detected with FENGYUN 1C fragment. Conjunction window active.',
-    status: 'Active',
-    created_at: new Date().toISOString()
+    distance: 4.21,
+    velocity: 7.55,
+    estimated_impact_time: '44m 10s',
+    recommended_action: 'Maintain orbital surveillance window.',
+    status: 'Active'
   }
 ];
 
@@ -257,35 +314,58 @@ export const App: React.FC = () => {
       const hazardDebris: DebrisObject = {
         id: 'deb-hazard-injected',
         name: 'COSMOS 2251 HIGH RISK FRAGMENT',
-        altitude: 550.2,
+        type: 'space debris',
+        distance: 0.85,
         velocity: 7.63,
-        miss_distance: 0.85,
+        direction: 'NW',
+        size: 0.18,
+        threat_level: 'critical',
+        risk_level: 'Critical',
         collision_probability: 0.0089,
-        size: '18 cm',
-        threat_level: 'Critical',
-        time_to_closest_approach: '06m 15s',
-        rcs: 0.19,
-        source: 'Live Conjunction Alert'
+        time_to_impact: 375,
+        time_to_impact_formatted: '06m 15s',
+        radial_distance: 0.85,
+        bearing_angle: 35,
+        last_seen: new Date().toISOString()
       };
       setDebrisList(prev => [hazardDebris, ...prev]);
       setSelectedDebris(hazardDebris);
       setRiskAnalysis({
+        satellite_id: activeSatellite?.id || 'sat-1',
         overall_risk_level: 'Critical',
-        max_collision_probability: 0.0089,
-        min_miss_distance: 0.85,
+        monitored_objects_count: 6,
+        counts: { critical: 2, high: 1, medium: 1, low: 2 },
         highest_threat: hazardDebris,
-        recommendation: 'URGENT: Initiate immediate Prograde evasion burn (+1.25 m/s delta-V).',
-        conjunction_count: 6
+        ai_recommendation: {
+          maneuver_id: 'man-hazard',
+          target_object_id: hazardDebris.id,
+          target_object_name: hazardDebris.name,
+          direction: 'Prograde',
+          altitude_change: 3.5,
+          new_altitude: (activeSatellite?.altitude || 550) + 3.5,
+          delta_v: 1.25,
+          burn_duration_seconds: 6.8,
+          burn_duration_formatted: '6.8s',
+          fuel_used_kg: 0.28,
+          fuel_percent_used: 0.7,
+          reason: 'URGENT: Initiate immediate Prograde evasion burn to clear high risk fragment.',
+          safety_clearance_post_maneuver_km: 9.15,
+          post_maneuver_risk: 'Low'
+        },
+        detailed_analysis: [hazardDebris, ...DEFAULT_DEBRIS]
       });
       setAlerts(prev => [
         {
           id: 'alt-hazard-' + Date.now(),
-          satellite_id: 'sat-1',
-          debris_id: 'deb-hazard-injected',
+          timestamp: new Date().toISOString(),
+          object_id: hazardDebris.id,
+          object_name: hazardDebris.name,
           risk_level: 'Critical',
-          message: 'CRITICAL INCOMING HAZARD: Injected conjunction trajectory under 1.0 km miss distance!',
-          status: 'Active',
-          created_at: new Date().toISOString()
+          distance: 0.85,
+          velocity: 7.63,
+          estimated_impact_time: '06m 15s',
+          recommended_action: 'Initiate immediate Prograde evasion burn.',
+          status: 'Active'
         },
         ...prev
       ]);
@@ -319,15 +399,21 @@ export const App: React.FC = () => {
       setManeuverResult(res.maneuver);
       await fetchTelemetry();
     } catch (e) {
-      const fallbackManeuver = {
+      const fallbackManeuver: ManeuverRecommendation = {
+        maneuver_id: 'man-' + Date.now(),
+        target_object_id: selectedDebris?.id || DEFAULT_DEBRIS[0].id,
+        target_object_name: selectedDebris?.name || DEFAULT_DEBRIS[0].name,
         direction: 'Prograde',
+        altitude_change: 2.1,
+        new_altitude: (activeSatellite?.altitude || 550) + 2.1,
         delta_v: 0.82,
-        duration_seconds: 4.5,
-        projected_clearance_km: 8.42,
-        propellant_used_kg: 0.18,
-        risk_reduction: '99.4%',
-        new_altitude_km: 552.1,
-        executed_at: new Date().toISOString()
+        burn_duration_seconds: 4.5,
+        burn_duration_formatted: '4.5s',
+        fuel_used_kg: 0.18,
+        fuel_percent_used: 0.5,
+        reason: 'Autonomous avoidance maneuver completed nominal. Safe clearance achieved.',
+        safety_clearance_post_maneuver_km: 8.42,
+        post_maneuver_risk: 'Low'
       };
       setManeuverResult(fallbackManeuver);
       setActiveSatellite(prev => prev ? {
@@ -338,9 +424,8 @@ export const App: React.FC = () => {
       setRiskAnalysis(prev => prev ? {
         ...prev,
         overall_risk_level: 'Low',
-        max_collision_probability: 0.00002,
-        min_miss_distance: 8.42,
-        recommendation: 'Autonomous avoidance maneuver completed nominal. Safe clearance achieved.'
+        counts: { critical: 0, high: 0, medium: 1, low: 4 },
+        ai_recommendation: fallbackManeuver
       } : prev);
       setAlerts(prev => prev.map(a => ({ ...a, status: 'Resolved' })));
     } finally {

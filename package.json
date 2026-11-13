@@ -4,7 +4,7 @@
   "description": "ASTROVIGIL - Autonomous Satellite Safety & Collision Avoidance Monitoring System",
   "main": "api/index.js",
   "scripts": {
-    "build": "cd frontend && npm install && npm run build",
+    "build": "npm --prefix frontend install && npm --prefix frontend run build",
     "start": "node backend/src/server.js"
   },
   "dependencies": {
