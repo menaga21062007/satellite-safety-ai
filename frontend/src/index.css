@@ -1,0 +1,184 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  background-color: #f5f2eb;
+  background-image: 
+    radial-gradient(circle at 10% 8%, rgba(89, 116, 69, 0.06) 0%, transparent 35%),
+    radial-gradient(circle at 90% 15%, rgba(190, 123, 56, 0.06) 0%, transparent 35%),
+    radial-gradient(circle at 50% 90%, rgba(89, 116, 69, 0.04) 0%, transparent 45%);
+  background-attachment: fixed;
+  color: #262c20;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6, .font-heading {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  letter-spacing: -0.015em;
+  font-weight: 700;
+  color: #1e2418;
+}
+
+/* Tactile Soft Neumorphic Card (With crisp, defined borders across all pages) */
+.neomathic-card,
+.orbit-card,
+.hud-card,
+.safari-card {
+  background: #fbf9f5;
+  border: 1.5px solid #cfc4b2;
+  border-radius: 1.25rem;
+  box-shadow: 
+    0 8px 20px -3px rgba(125, 115, 100, 0.12),
+    0 2px 6px -1px rgba(125, 115, 100, 0.06);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  color: #2b3323;
+  position: relative;
+}
+
+.neomathic-card:hover,
+.orbit-card:hover,
+.hud-card:hover,
+.safari-card:hover {
+  border-color: #597445;
+  box-shadow: 
+    0 12px 26px -3px rgba(89, 116, 69, 0.18),
+    0 4px 10px -2px rgba(125, 115, 100, 0.08);
+  transform: translateY(-1px);
+}
+
+/* Master Outer Shell Card */
+.glass-shell {
+  background: #fbf9f5;
+  border: 1.5px solid #cfc4b2;
+  border-radius: 1.5rem;
+  box-shadow: 
+    0 12px 30px -4px rgba(125, 115, 100, 0.12),
+    0 4px 10px -2px rgba(125, 115, 100, 0.05);
+}
+
+/* Horizontal Stats Capsule Bar (Tactile Sand Pill) */
+.stats-capsule {
+  background: #fbf9f5;
+  border: 1.5px solid #cfc4b2;
+  border-radius: 1.25rem;
+  box-shadow: 
+    0 6px 18px -2px rgba(125, 115, 100, 0.08),
+    0 2px 5px -1px rgba(125, 115, 100, 0.04);
+}
+
+/* Moss Green Pill Button (Signature CTA from reference) */
+.btn-moss,
+.btn-white-pill,
+.btn-orbit,
+.btn-rose,
+.btn-gold {
+  background: #597445;
+  color: #ffffff;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  border-radius: 9999px;
+  box-shadow: 0 6px 18px rgba(89, 116, 69, 0.35);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-moss:hover,
+.btn-white-pill:hover,
+.btn-orbit:hover,
+.btn-rose:hover,
+.btn-gold:hover {
+  background: #475e36;
+  box-shadow: 0 8px 22px rgba(89, 116, 69, 0.45);
+  transform: translateY(-1px);
+}
+
+/* Soft Sand Outline Button */
+.btn-sand-pill,
+.btn-glass-pill,
+.btn-orbit-outline,
+.btn-rose-outline,
+.btn-gold-outline {
+  background: #eae4d8;
+  border: 1px solid rgba(214, 205, 190, 0.9);
+  color: #3b4432;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  border-radius: 9999px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-sand-pill:hover,
+.btn-glass-pill:hover,
+.btn-orbit-outline:hover,
+.btn-rose-outline:hover,
+.btn-gold-outline:hover {
+  background: #ded6c5;
+  color: #1e2418;
+}
+
+/* Circular Arrow Button */
+.btn-circle-arrow {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 9999px;
+  background: #eae4d8;
+  border: 1px solid rgba(214, 205, 190, 0.8);
+  color: #4a5440;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.btn-circle-arrow:hover {
+  background: #597445;
+  color: #ffffff;
+}
+
+/* Tag Pill */
+.orbit-pill {
+  border-radius: 9999px;
+  background: #eae4d8;
+  border: 1px solid rgba(218, 209, 194, 0.9);
+  color: #434c38;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.2rem 0.65rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Safari Ticket Motif Card */
+.safari-ticket {
+  background: #fbf9f5;
+  border: 1px solid rgba(224, 216, 202, 0.9);
+  border-radius: 1.25rem;
+  box-shadow: 0 10px 25px -3px rgba(125, 115, 100, 0.10);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f5f2eb;
+}
+::-webkit-scrollbar-thumb {
+  background: #c5baa4;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #597445;
+}

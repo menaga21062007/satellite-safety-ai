@@ -1,0 +1,16 @@
+{
+  "name": "satellite-safety-ai",
+  "version": "1.0.0",
+  "description": "ASTROVIGIL - Autonomous Satellite Safety & Collision Avoidance Monitoring System",
+  "main": "api/index.js",
+  "scripts": {
+    "build": "cd frontend && npm install && npm run build",
+    "start": "node backend/src/server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "pdfkit": "^0.15.0",
+    "sqlite3": "^6.0.1"
+  }
+}

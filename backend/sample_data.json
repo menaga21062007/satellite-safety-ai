@@ -1,0 +1,121 @@
+{
+  "satellites": [
+    {
+      "id": "SAT-ALPHA-1",
+      "name": "Aegis-Sentinel 1 (Earth Observer)",
+      "status": "Operational",
+      "altitude": 550.0,
+      "velocity": 7.66,
+      "current_orbit": "Sun-Synchronous LEO (550 km)",
+      "inclination": 97.4,
+      "fuel_percent": 88.5,
+      "battery_percent": 94.2,
+      "latitude": 28.5729,
+      "longitude": -80.6490,
+      "mass_kg": 850.0,
+      "last_update": "2026-10-26T10:00:00.000Z"
+    },
+    {
+      "id": "SAT-BRAVO-2",
+      "name": "AeroComms-8 (LEO Constellation)",
+      "status": "Operational",
+      "altitude": 620.0,
+      "velocity": 7.55,
+      "current_orbit": "Circular LEO (620 km)",
+      "inclination": 53.0,
+      "fuel_percent": 74.0,
+      "battery_percent": 91.0,
+      "latitude": -12.45,
+      "longitude": 45.22,
+      "mass_kg": 620.0,
+      "last_update": "2026-10-26T10:00:00.000Z"
+    },
+    {
+      "id": "SAT-CHARLIE-3",
+      "name": "TerraScan Hyperspectral 4",
+      "status": "Standby Orbit",
+      "altitude": 705.0,
+      "velocity": 7.51,
+      "current_orbit": "Polar LEO (705 km)",
+      "inclination": 98.2,
+      "fuel_percent": 92.8,
+      "battery_percent": 98.0,
+      "latitude": 64.12,
+      "longitude": -21.90,
+      "mass_kg": 1200.0,
+      "last_update": "2026-10-26T10:00:00.000Z"
+    }
+  ],
+  "debris": [
+    {
+      "id": "DEB-2026-9041",
+      "name": "COSMOS-1408 Frag #4192",
+      "type": "space debris",
+      "distance": 18.4,
+      "velocity": 7.82,
+      "direction": "Prograde Crossing (Az 045°)",
+      "size": 1.8,
+      "threat_level": "risky",
+      "risk_level": "High",
+      "collision_probability": 74.8,
+      "time_to_impact": 380,
+      "time_to_impact_formatted": "06m 20s"
+    },
+    {
+      "id": "DEB-2026-8812",
+      "name": "SL-16 Rocket Body Fragment",
+      "type": "rocket body",
+      "distance": 42.1,
+      "velocity": 7.45,
+      "direction": "Retrograde Incline (Az 160°)",
+      "size": 4.2,
+      "threat_level": "watchlist",
+      "risk_level": "Medium",
+      "collision_probability": 18.2,
+      "time_to_impact": 1450,
+      "time_to_impact_formatted": "24m 10s"
+    },
+    {
+      "id": "DEB-2026-5509",
+      "name": "Defunct Microsat Sensor Mast",
+      "type": "old satellite fragment",
+      "distance": 78.5,
+      "velocity": 7.21,
+      "direction": "Co-orbital Lead (Az 310°)",
+      "size": 0.8,
+      "threat_level": "safe",
+      "risk_level": "Low",
+      "collision_probability": 2.1,
+      "time_to_impact": 4200,
+      "time_to_impact_formatted": "01h 10m"
+    },
+    {
+      "id": "DEB-2026-1102",
+      "name": "Uncataloged Radar Blip #09",
+      "type": "unknown object",
+      "distance": 95.0,
+      "velocity": 8.10,
+      "direction": "Hyperbolic Flyby (Az 220°)",
+      "size": 0.4,
+      "threat_level": "safe",
+      "risk_level": "Low",
+      "collision_probability": 0.8,
+      "time_to_impact": 6500,
+      "time_to_impact_formatted": "01h 48m"
+    },
+    {
+      "id": "DEB-2026-3022",
+      "name": "Fregat Upper Stage Debris",
+      "type": "rocket body",
+      "distance": 61.2,
+      "velocity": 7.60,
+      "direction": "Descending Node (Az 085°)",
+      "size": 2.6,
+      "threat_level": "safe",
+      "risk_level": "Low",
+      "collision_probability": 4.5,
+      "time_to_impact": 2900,
+      "time_to_impact_formatted": "48m 20s"
+    }
+  ]
+}
