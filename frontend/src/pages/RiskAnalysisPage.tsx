@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { DebrisObject, RiskAnalysisResponse, Satellite } from '../types';
-import { api } from '../api';
+import { downloadSafetyReportPdf } from '../utils/reportDownloader';
 import { 
   AlertTriangle, 
   ShieldAlert, 
@@ -31,8 +31,18 @@ export const RiskAnalysisPage: React.FC<RiskAnalysisPageProps> = ({
 
   const handleDownloadPdf = () => {
     setDownloadingPdf(true);
-    window.open(api.getPdfReportUrl(satellite?.id), '_blank');
-    setTimeout(() => setDownloadingPdf(false), 2000);
+    try {
+      downloadSafetyReportPdf(
+        satellite,
+        debrisList,
+        riskAnalysis,
+        riskAnalysis?.ai_recommendation || null
+      );
+    } catch (e) {
+      console.error('PDF download error:', e);
+    } finally {
+      setTimeout(() => setDownloadingPdf(false), 1200);
+    }
   };
 
   return (
